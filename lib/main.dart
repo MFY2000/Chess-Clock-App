@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:chesss_watch/ChessTimer.dart';
+import 'package:chesss_watch/Custom/StopWatch.dart';
 import 'package:chesss_watch/Custom/TextFeild.dart';
+import 'package:chesss_watch/Model/Chess.dart';
 import 'package:flutter/material.dart';
 
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chess Watch',
       
-      home: StartScreen(),
+      home: HomeWidget(),
     );
   }
 }
@@ -42,13 +44,27 @@ class _StartScreenState extends State<StartScreen> {
   late bool startbtn = false;
   
   onChangeText(context){
-    Map<String,String> names = {"Black": player1.value.text,"White":player2.value.text};
- 
-    if(names.values.any((element) => element.isEmpty)){
+    List<String> names = [player1.value.text, player2.value.text];
+
+
+    if(!(names.any((element) => element.isEmpty))){
+
+      ChessBoard[1].name = names[0];
+      ChessBoard[0].name = names[1];
+
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => (ChessTimer(player: names))),
+        MaterialPageRoute(builder: (context) => (ChessTimer())),
       );
+
+    }
+    else{
+      if(names[0].isEmpty) {
+        player1.selection;
+      }
+      else{
+        player2.selection;
+      }
     }
   }
 
@@ -85,19 +101,19 @@ class _StartScreenState extends State<StartScreen> {
             ),
     
             TextButton(      
-              onPressed: onChangeText(context),
-              autofocus: false,
+              onPressed: () => {onChangeText(context)},
+              // autofocus: false,
               child: Container(
                 height: (height * 0.045),
                 width: (width * 0.25),
                 alignment: Alignment.center,
                 
                 child: Text( 'Start',
-                style: TextStyle(
-                  fontFamily: 'Times New Roman', 
-                  color: Color(0xffffffff),
-                  fontWeight: FontWeight.bold,
-                ),
+                  style: TextStyle(
+                    fontFamily: 'Times New Roman', 
+                    color: Color(0xffffffff),
+                    fontWeight: FontWeight.bold,
+                  ),
                ),
 
                 decoration: BoxDecoration(

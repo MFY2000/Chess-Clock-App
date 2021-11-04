@@ -1,10 +1,12 @@
 // ignore_for_file: file_names
 
+import 'package:chesss_watch/Custom/Clock.dart';
+import 'package:chesss_watch/Model/Chess.dart';
 import 'package:flutter/material.dart';
 
 class ChessTimer extends StatefulWidget {
-  final Map<String, String> player;
-  const ChessTimer({Key? key, required this.player}) : super(key: key);
+
+  const ChessTimer({Key? key}) : super(key: key);
 
   @override
   _ChessTimerState createState() => _ChessTimerState();
@@ -17,7 +19,9 @@ class _ChessTimerState extends State<ChessTimer> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-
+    
+    print(ChessBoard[0].name);
+    
     return Scaffold(
 
         // backgroundColor: const Color(0xffffffff),
@@ -32,18 +36,48 @@ class _ChessTimerState extends State<ChessTimer> {
             ),
             child: Column(
               children: [
+                
                 SizedBox(
-                  height: (height * 0.15),
+                  height: (height * 0.1),
+                  child: Center(child: Text(ChessBoard[0].name, style: TextStyle(color: ChessBoard[0].color),),),
                 ),
 
+                const ClockCard( index: 0),
+
+
                 SizedBox(
-                  width  : (width * 0.5),
-                  height : (height * 0.5),
-                  child: Stack(children: [
-                    Image.asset("assets/images/1.png", fit: BoxFit.fill, height : (height * 0.25)),
-                    Positioned(top: height * 0.105,right: width * 0.175,  child: Text("data"))  ,
-                  ],),
-                )
+                  height: (height * 0.1),  
+                ),
+    
+                TextButton(      
+                  onPressed: ()=>{},
+                  autofocus: false,
+                  child: Container(
+                    height: (height * 0.045),
+                    width: (width * 0.25),
+                    alignment: Alignment.center,
+                    
+                    child: const Text( 'Stop',
+                    style: TextStyle(
+                      fontFamily: 'Times New Roman', 
+                      color: Color(0xffffffff),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.red,
+                    ),
+                  ),
+                ),
+        
+                SizedBox(
+                  height: (height * 0.1),
+                  child: Center(child: Text(ChessBoard[1].name, style: TextStyle(color: ChessBoard[1].color),),),
+                ),
+
+                const ClockCard(index: 1),
 
               ],
             )));
