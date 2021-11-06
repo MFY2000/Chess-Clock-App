@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:chesss_watch/ChessTimer.dart';
-import 'package:chesss_watch/Custom/StopWatch.dart';
 import 'package:chesss_watch/Custom/TextFeild.dart';
 import 'package:chesss_watch/Custom/Timer.dart';
 import 'package:chesss_watch/Model/Chess.dart';
@@ -24,10 +23,143 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chess Watch',
       
-      home: StopWatch(),
+      home: MyHomePage(title: 'Chess Watch',),
     );
   }
 }
+
+
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key,required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+
+  late TimerController _timerController;
+  TimerStyle _timerStyle = TimerStyle.ring;
+  TimerProgressIndicatorDirection _progressIndicatorDirection = TimerProgressIndicatorDirection.clockwise;
+  TimerProgressTextCountDirection _progressTextCountDirection = TimerProgressTextCountDirection.count_down;
+
+
+  @override
+  void initState() {
+    // initialize timercontroller
+    _timerController = TimerController(this);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title, textAlign: TextAlign.center,),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: SimpleTimer(
+                    duration: const Duration(seconds: 600),
+                    controller: _timerController,
+                    timerStyle: _timerStyle,
+                    onStart: handleTimerOnStart,
+                    onEnd: handleTimerOnEnd,
+                    valueListener: timerValueChangeListener,
+                    backgroundColor: Colors.grey,
+                    progressIndicatorColor: Colors.green,
+                    progressIndicatorDirection: _progressIndicatorDirection,
+                    progressTextCountDirection: _progressTextCountDirection,
+                    progressTextStyle: TextStyle(color: Colors.black),
+                    strokeWidth: 8,
+                  ),
+                )
+            ),
+            Column(
+              children: <Widget>[
+                const Text("Timer Status", textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: _timerController.start,
+                      child: const Text("Start", style: TextStyle(color: Colors.white)),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green
+                      )
+                    ),
+                    TextButton(
+                      onPressed: _timerController.pause,
+                      child: const Text("Pause", style: TextStyle(color: Colors.white)),
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue
+                      )
+                    ),
+                    TextButton(
+                      onPressed: _timerController.reset,
+                      child: const Text("Reset", style: TextStyle(color: Colors.white)),
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.red
+                      )
+                    ),
+                    TextButton(
+                      onPressed: _timerController.restart,
+                      child: const Text("Restart", style: TextStyle(color: Colors.white)),
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.orange
+                      )
+                    ),
+                  ],
+                )
+              ],
+            ),
+            ],
+        )
+      ),
+    );
+  }
+
+  void _setCountDirection(TimerProgressTextCountDirection countDirection) {
+    setState(() {
+      _progressTextCountDirection = countDirection;
+    });
+  }
+
+  void _setProgressIndicatorDirection(TimerProgressIndicatorDirection progressIndicatorDirection) {
+    setState(() {
+      _progressIndicatorDirection = progressIndicatorDirection;
+    });
+  }
+
+  void _setStyle(TimerStyle timerStyle) {
+    setState(() {
+      _timerStyle = timerStyle;
+    });
+  }
+
+  void timerValueChangeListener(Duration timeElapsed) {
+
+  }
+
+  void handleTimerOnStart() {
+    print("timer has just started");
+  }
+
+  void handleTimerOnEnd() {
+    print("timer has ended");
+  }
+}
+
+
 
 class StartScreen extends StatefulWidget {
   const StartScreen({ Key? key }) : super(key: key);

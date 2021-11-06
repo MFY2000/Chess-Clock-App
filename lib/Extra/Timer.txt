@@ -1,0 +1,89 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+
+class TimerClass extends StatefulWidget {
+  const TimerClass({ Key? key }) : super(key: key);
+
+  @override
+  _TimerClassState createState() => _TimerClassState();
+}
+
+class _TimerClassState extends State<TimerClass> {
+  Map<String, int> Time = {"Hours": 0, "Minutes": 10, "Seconds": 0};
+  late int status = 0; // 1 => Running, 0 => Stop, 3 => Timeover 
+  late String timeDisplay = "0:10:00";
+
+
+  void Start(){
+    setState(() {
+      status = 1;
+    });
+    Running();
+  }
+  
+  void Stop(){
+    status = 0;
+    print("call stop");
+  }
+
+  Running() {
+    if(status == 1) {
+      sleep(const Duration(seconds: 1));
+      // await Future.delayed(const Duration(seconds: 1), (){ print("1"); });
+      afterASecond();
+    }else{
+      print("Time over");
+    }
+
+  }
+
+  afterASecond(){
+    print("object");
+    display();
+
+    int? Seconds = Time["Seconds"];
+    if(Seconds == 0){
+      if(Time["Minutes"] == 0){
+        status = 3;
+      }else{
+        Time["Seconds"] = 59;
+        Time["Minutes"] = (Time["Minutes"]!-1);
+      }
+    }
+    else{
+      Time["Seconds"] = (Seconds! - 1);
+    }
+    Running();
+  }
+
+  void display() {
+    setState(() {
+      timeDisplay = Time["Hours"].toString().padRight(2)+" : "+
+      Time["Minutes"].toString().padRight(2)+" : "+
+      Time["Seconds"].toString().padRight(2);
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text(timeDisplay),
+
+          Row(
+            children: [
+              TextButton(onPressed: ()=>{ Start() }, child: Text("Start")),
+              TextButton(onPressed: ()=>{ Stop() }, child: Text("Stop")),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
