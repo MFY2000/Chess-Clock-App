@@ -42,7 +42,7 @@ class _ChessTimerState extends State<ChessTimer> {
                   child: Center(child: Text(ChessBoard[0].name, style: TextStyle(color: ChessBoard[0].color),),),
                 ),
 
-                const ClockCard( index: 0),
+                ClockCard( index: 0),
 
 
                 SizedBox(
@@ -77,7 +77,7 @@ class _ChessTimerState extends State<ChessTimer> {
                   child: Center(child: Text(ChessBoard[1].name, style: TextStyle(color: ChessBoard[1].color),),),
                 ),
 
-                const ClockCard(index: 1),
+                ClockCard(index: 1),
 
               ],
             )));

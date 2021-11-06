@@ -3,6 +3,7 @@
 import 'package:chesss_watch/ChessTimer.dart';
 import 'package:chesss_watch/Custom/StopWatch.dart';
 import 'package:chesss_watch/Custom/TextFeild.dart';
+import 'package:chesss_watch/Custom/Timer.dart';
 import 'package:chesss_watch/Model/Chess.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chess Watch',
       
-      home: HomeWidget(),
+      home: StopWatch(),
     );
   }
 }
