@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'dart:math' as Math;
+import 'package:chesss_watch/Model/Chess.dart';
 import 'package:flutter/material.dart';
 
 /// A Simple Timer Widget
@@ -23,7 +24,7 @@ class SimpleTimer extends StatefulWidget {
     this.progressTextCountDirection =
         TimerProgressTextCountDirection.count_down,
 
-    required this.onTapClock,
+     required this.onTapClock, required this.chessSide,
   })  : assert(!(status == null && controller == null),
             "No Controller or Status has been set; Please set either the controller (TimerController) or the status (TimerStatus) property - only should can be set"),
         assert(status == null || controller == null,
@@ -31,10 +32,11 @@ class SimpleTimer extends StatefulWidget {
         super(key: key);
 
 
+  final ChessPlayer chessSide;
   final void Function() onTapClock; 
   final Duration duration;
   final Duration delay;
-  late final TimerController? controller;
+  final TimerController? controller;
   final TimerStatus? status;
   final TimerStyle timerStyle;
   final String Function(Duration timeElapsed)? progressTextFormatter;
@@ -56,14 +58,16 @@ class TimerState extends State<SimpleTimer>
   late TimerController controller;
   bool _useLocalController = false;
   bool wasActive = false;
-  late var width, height;
+
 
   @override
   void initState() {
-
-    widget.controller = TimerController(this);
-    controller = widget.controller!;
-    
+    if (widget.controller == null) {
+      controller = TimerController(this);
+      _useLocalController = true;
+    } else {
+      controller = widget.controller!;
+    }
     controller.duration = widget.duration;
     controller._setDelay(widget.delay);
     if (_useLocalController && (widget.status == TimerStatus.start)) {
@@ -75,7 +79,7 @@ class TimerState extends State<SimpleTimer>
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.black,
+        color: widget.chessSide.color1,
         height: MediaQuery.of(context).size.height * .5,
         child: Align(
             alignment: FractionalOffset.center,
@@ -93,9 +97,9 @@ class TimerState extends State<SimpleTimer>
                           width: 200,
                           height: 200,
                           alignment: Alignment.center,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage("images/2.png"),
+                                  image: AssetImage(widget.chessSide.image),
                                   fit: BoxFit.fill)),
                           child: AnimatedBuilder(
                               animation: controller,
@@ -106,7 +110,7 @@ class TimerState extends State<SimpleTimer>
                                           .textTheme
                                           .headline4!
                                           .fontSize,
-                                      color: Colors.white,
+                                      color: widget.chessSide.color2,
                                     ));
                               }),
                         ),
