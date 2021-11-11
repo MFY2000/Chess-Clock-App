@@ -40,7 +40,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>
+
     with SingleTickerProviderStateMixin {
+
+  late bool start;
 
   late TimerController _timerController;
   TimerStyle _timerStyle = TimerStyle.ring;
@@ -52,74 +55,64 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     // initialize timercontroller
     _timerController = TimerController(this);
+    start = false;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title, textAlign: TextAlign.center,),
-        centerTitle: true,
-      ),
+      
       body: Center(
         child: Column(
           children: <Widget>[
-            Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: SimpleTimer(
-                    duration: const Duration(seconds: 600),
-                    controller: _timerController,
-                    timerStyle: _timerStyle,
-                    onStart: handleTimerOnStart,
-                    onEnd: handleTimerOnEnd,
-                    valueListener: timerValueChangeListener,
-                    backgroundColor: Colors.grey,
-                    progressIndicatorColor: Colors.green,
-                    progressIndicatorDirection: _progressIndicatorDirection,
-                    progressTextCountDirection: _progressTextCountDirection,
-                    progressTextStyle: TextStyle(color: Colors.black),
-                    strokeWidth: 8,
-                  ),
-                )
+            SimpleTimer(
+              duration: const Duration(seconds: 6),
+              controller: _timerController,
+              timerStyle: _timerStyle,
+              onStart: handleTimerOnStart,
+              onEnd: handleTimerOnEnd,
+              valueListener: timerValueChangeListener,
+              onTapClock: onTapStart,
+              progressIndicatorDirection: _progressIndicatorDirection,
+              progressTextCountDirection: _progressTextCountDirection,
+              progressTextStyle: TextStyle(color: Colors.black),
+              strokeWidth: 8,
             ),
-            Column(
+
+            
+            const Text("Timer Status", textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                const Text("Timer Status", textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    TextButton(
-                      onPressed: _timerController.start,
-                      child: const Text("Start", style: TextStyle(color: Colors.white)),
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.green
-                      )
-                    ),
-                    TextButton(
-                      onPressed: _timerController.pause,
-                      child: const Text("Pause", style: TextStyle(color: Colors.white)),
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue
-                      )
-                    ),
-                    TextButton(
-                      onPressed: _timerController.reset,
-                      child: const Text("Reset", style: TextStyle(color: Colors.white)),
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.red
-                      )
-                    ),
-                    TextButton(
-                      onPressed: _timerController.restart,
-                      child: const Text("Restart", style: TextStyle(color: Colors.white)),
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.orange
-                      )
-                    ),
-                  ],
-                )
+                TextButton(
+                  onPressed: _timerController.start,
+                  child: const Text("Start", style: TextStyle(color: Colors.white)),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.green
+                  )
+                ),
+                TextButton(
+                  onPressed: _timerController.pause,
+                  child: const Text("Pause", style: TextStyle(color: Colors.white)),
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue
+                  )
+                ),
+                TextButton(
+                  onPressed: _timerController.reset,
+                  child: const Text("Reset", style: TextStyle(color: Colors.white)),
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.red
+                  )
+                ),
+                TextButton(
+                  onPressed: _timerController.restart,
+                  child: const Text("Restart", style: TextStyle(color: Colors.white)),
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.orange
+                  )
+                ),
               ],
             ),
             ],
@@ -127,6 +120,20 @@ class _MyHomePageState extends State<MyHomePage>
       ),
     );
   }
+
+  void onTapStart(){
+    if(start){
+      _timerController.stop();
+    }
+    else{
+    print("helloo");
+      _timerController.start();
+    }
+    setState(() {
+      start = !start;
+    });
+  }
+
 
   void _setCountDirection(TimerProgressTextCountDirection countDirection) {
     setState(() {
