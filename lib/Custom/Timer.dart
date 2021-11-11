@@ -19,28 +19,22 @@ class SimpleTimer extends StatefulWidget {
     this.progressTextStyle,
     this.delay = const Duration(seconds: 0),
     this.timerStyle = TimerStyle.ring,
-    this.displayProgressIndicator = true,
     this.displayProgressText = true,
     this.progressTextCountDirection =
         TimerProgressTextCountDirection.count_down,
-    this.progressIndicatorDirection = TimerProgressIndicatorDirection.clockwise,
-    this.backgroundColor = Colors.grey,
-    this.progressIndicatorColor = Colors.green,
-    this.startAngle = Math.pi * 1.5,
-    this.strokeWidth = 5.0,  required this.onTapClock,
+
+    required this.onTapClock,
   })  : assert(!(status == null && controller == null),
             "No Controller or Status has been set; Please set either the controller (TimerController) or the status (TimerStatus) property - only should can be set"),
         assert(status == null || controller == null,
             "Both Controller and Status have been set; Please set either the controller (TimerController) or the status (TimerStatus) - only one should be set"),
-        assert(displayProgressIndicator || displayProgressText,
-            "At least either displayProgressText or displayProgressIndicator must be set to True"),
         super(key: key);
 
 
   final void Function() onTapClock; 
   final Duration duration;
   final Duration delay;
-  final TimerController? controller;
+  late final TimerController? controller;
   final TimerStatus? status;
   final TimerStyle timerStyle;
   final String Function(Duration timeElapsed)? progressTextFormatter;
@@ -48,14 +42,8 @@ class SimpleTimer extends StatefulWidget {
   final VoidCallback? onEnd;
   final void Function(Duration timeElapsed)? valueListener;
   final TimerProgressTextCountDirection progressTextCountDirection;
-  final TimerProgressIndicatorDirection progressIndicatorDirection;
   final bool displayProgressText;
   final TextStyle? progressTextStyle;
-  final bool displayProgressIndicator;
-  final Color progressIndicatorColor;
-  final Color backgroundColor;
-  final double startAngle;
-  final double strokeWidth;
 
   @override
   State<StatefulWidget> createState() {
@@ -72,12 +60,10 @@ class TimerState extends State<SimpleTimer>
 
   @override
   void initState() {
-    if (widget.controller == null) {
-      controller = TimerController(this);
-      _useLocalController = true;
-    } else {
-      controller = widget.controller!;
-    }
+
+    widget.controller = TimerController(this);
+    controller = widget.controller!;
+    
     controller.duration = widget.duration;
     controller._setDelay(widget.delay);
     if (_useLocalController && (widget.status == TimerStatus.start)) {
@@ -101,8 +87,8 @@ class TimerState extends State<SimpleTimer>
                     alignment: FractionalOffset.center,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: ElevatedButton(
-                        onPressed: widget.onTapClock,
+                      child: GestureDetector(
+                        onTap: widget.onTapClock,
                         child: Container(
                           width: 200,
                           height: 200,
@@ -162,7 +148,6 @@ class TimerState extends State<SimpleTimer>
 
 class TimerController extends AnimationController {
   bool _wasActive = false;
-
   Duration? _delay;
 
   TimerController(TickerProvider vsync) : super(vsync: vsync);
@@ -200,32 +185,17 @@ class TimerController extends AnimationController {
     this.stop();
   }
 
-  /// This resets the value back to the [lowerBound]
   @override
   void reset() {
     _wasActive = false;
     super.reset();
   }
 
-  /// This resets and starts the controller animation.
-  ///
-  /// If [startFrom] is specified, the animation value is calculated
-  /// and starts from that value, rather than from the [lowerBound]
   void restart({bool useDelay = true, Duration? startFrom}) {
     this.reset();
     this.start(startFrom: startFrom);
   }
 
-  /// This Reduces the length of time elapsed by the specified duration.
-  ///
-  /// This doesn't override the initial SimpleTimer widget duration
-  /// The specified duration is used to calculate the start value
-  ///
-  /// The [start] value sets whether or not start the timer after the
-  /// value change (defaults to `false`).
-  ///
-  /// The [animationDuration] value sets the length of time used to animate
-  /// from the previous value to the new value
   void add(Duration duration,
       {bool start = false,
       Duration changeAnimationDuration = const Duration(seconds: 0)}) {
@@ -238,16 +208,6 @@ class TimerController extends AnimationController {
     }
   }
 
-  /// This increases the length of time elapsed by the specified duration [duration].
-  ///
-  /// This doesn't override the initial SimpleTimer widget duration.
-  /// The specified duration is used to calculate the start value
-  ///
-  /// The [start] value sets whether or not start the timer after the
-  /// value change (defaults to `false`).
-  ///
-  /// The [animationDuration] value sets the length of time used to animate
-  /// from the previous value to the new value
   void subtract(Duration duration,
       {bool start = false,
       Duration changeAnimationDuration = const Duration(seconds: 0)}) {
@@ -271,8 +231,6 @@ enum TimerProgressTextCountDirection {
   count_down,
   count_up,
 }
-
-enum TimerProgressIndicatorDirection { clockwise, counter_clockwise, both }
 
 // test
 enum TimerStyle { ring, expanding_sector, expanding_segment, expanding_circle }
