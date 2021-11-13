@@ -1,7 +1,87 @@
 
 // ignore_for_file: file_names
 
+import 'package:chesss_watch/Custom/TextFeild.dart';
+import 'package:chesss_watch/Model/Chess.dart';
+import 'package:chesss_watch/main.dart';
 import 'package:flutter/material.dart';
+
+
+
+class StartScreen extends StatefulWidget {
+  const StartScreen({ Key? key }) : super(key: key);
+
+  @override
+  _StartScreenState createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  TextEditingController player1 = TextEditingController();
+  TextEditingController player2 = TextEditingController();
+
+  late var width, height;
+
+  late bool startbtn = false;
+  
+  onChangeText(context){
+    List<String> names = [player1.value.text, player2.value.text];
+
+    if(!(names.any((element) => element.isEmpty))){
+      ChessBoard[1].name = names[0];
+      ChessBoard[0].name = names[1];
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => (MyHomePage())),
+      );
+
+    }
+    else{
+      if(names[0].isEmpty) {
+        player1.selection;
+      }
+      else{
+        player2.selection;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    
+    return Scaffold(
+      
+      // backgroundColor: const Color(0xffffffff),
+      body: SizedBox(
+        width: width,
+        height: height,
+        child: Stack(
+          children: [
+            Container(
+              height: height * .5,
+              color: Colors.orange,
+            ), 
+
+            
+            Positioned(
+              top: 150,
+              right: 0,
+              child: Container(
+                height: height * .5,
+                color: Colors.black,
+              ),
+            )
+          ],
+        ),
+      )
+    );
+  }
+}
+
+
 
 
 // class _StartScreenState extends State<StartScreen> {
