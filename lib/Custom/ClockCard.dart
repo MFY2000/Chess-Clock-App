@@ -8,10 +8,17 @@ class ClockCard extends StatefulWidget {
   TimerStyle timerStyle;
   TimerProgressTextCountDirection progressTextCountDirection;
   bool start;
-  final void Function() onTapClock; 
+  final void Function() onTapClock;
   final ChessPlayer chessSide;
-  
-  ClockCard({Key? key, required this.progressTextCountDirection, required this.timerStyle, required this.start, required this.onTapClock, required this.chessSide }) : super(key: key);
+
+  ClockCard(
+      {Key? key,
+      required this.progressTextCountDirection,
+      required this.timerStyle,
+      required this.start,
+      required this.onTapClock,
+      required this.chessSide})
+      : super(key: key);
 
   @override
   _ClockCardState createState() => _ClockCardState();
@@ -19,7 +26,6 @@ class ClockCard extends StatefulWidget {
 
 class _ClockCardState extends State<ClockCard>
     with SingleTickerProviderStateMixin {
-
   late TimerController timerController;
 
   @override
@@ -31,7 +37,7 @@ class _ClockCardState extends State<ClockCard>
 
   @override
   Widget build(BuildContext context) {
-    widget.start ? timerController.start(): timerController.stop();
+    widget.start ? timerController.start() : timerController.stop();
     return SimpleTimer(
       chessSide: widget.chessSide,
       duration: const Duration(seconds: 600),
@@ -41,5 +47,4 @@ class _ClockCardState extends State<ClockCard>
       progressTextCountDirection: widget.progressTextCountDirection,
     );
   }
-
 }
