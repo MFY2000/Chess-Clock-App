@@ -64,9 +64,30 @@ class _StartScreenState extends State<StartScreen> {
             width: width,
             child: Container(
               height: height * .5,
-              color: Colors.orange,
+              color: Colors.white,
             ),
           ),
+          Positioned(
+              top: 0,
+              right: 0,
+              height: (height * 0.045),
+              width: (width * 0.25),
+              child: TextButton(
+                onPressed: () => {onChangeText(context)},
+                child: Container(
+                  height: (height * 0.045),
+                  width: (width * 0.25),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Start',
+                    style: TextStyle(
+                      fontFamily: 'Times New Roman',
+                      color: Color(0xffffffff),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )),
           Positioned(
             bottom: 0,
             left: 0,
