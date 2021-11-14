@@ -67,25 +67,33 @@ class _MyHomePageState extends State<MyHomePage> {
             progressTextCountDirection: _progressTextCountDirection,
           ),
 
-          TextButton(
-            onPressed: toChangeState,
-            // autofocus: false,
-            child: Container(
-              color: startButton ? Colors.green[600] : Colors.red,
-
-              height: (height * 0.045),
-              width: (width * 0.25),
-              alignment: Alignment.center,
-              child: Text(
-                startButton ? 'Start' : "Stop",
-                style: TextStyle(
-                  fontFamily: 'Times New Roman',
-                  color: Color(0xffffffff),
-                  fontWeight: FontWeight.bold,
+          Positioned(
+            top: 30,
+            right: 20,
+            height: (height * 0.045),
+            width: (width * 0.25),
+            child: TextButton(
+              onPressed: toChangeState,
+              child: Container(
+                height: (height * 0.045),
+                width: (width * 0.25),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: startButton ? Colors.green[600] : Colors.red,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  startButton ? 'Start' : "Stop",
+                  style: TextStyle(
+                    fontFamily: 'Times New Roman',
+                    color: Color(0xffffffff),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
           ),
+          
           ClockCard(
             chessSide: ChessBoard[0],
             start: start == 1,
@@ -109,14 +117,13 @@ class _MyHomePageState extends State<MyHomePage> {
       startButton = !startButton;
     });
 
-    if(!startButton){
+    if (!startButton) {
       setState(() {
         start = 2;
       });
-    }else{
+    } else {
       onTapStart();
     }
-
   }
 
   void _setCountDirection(TimerProgressTextCountDirection countDirection) {
