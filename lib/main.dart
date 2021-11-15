@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import 'package:chesss_watch/ChessTimer.dart';
 import 'package:chesss_watch/Custom/ClockCard.dart';
@@ -57,50 +57,25 @@ class _MyHomePageState extends State<MyHomePage> {
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Column(
+      body: Stack(
+        overflow: Overflow.visible,
         children: <Widget>[
-          ClockCard(
-            chessSide: ChessBoard[1],
-            start: start == 0,
-            timerStyle: _timerStyle,
-            onTapClock: onTapStart,
-            progressTextCountDirection: _progressTextCountDirection,
-          ),
-
-          Positioned(
-            top: 30,
-            right: 20,
-            height: (height * 0.045),
-            width: (width * 0.25),
-            child: TextButton(
-              onPressed: toChangeState,
-              child: Container(
-                height: (height * 0.045),
-                width: (width * 0.25),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: startButton ? Colors.green[600] : Colors.red,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  startButton ? 'Start' : "Stop",
-                  style: TextStyle(
-                    fontFamily: 'Times New Roman',
-                    color: Color(0xffffffff),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+          Column(children: [
+            ClockCard(
+              chessSide: ChessBoard[1],
+              start: start == 0,
+              timerStyle: _timerStyle,
+              onTapClock: onTapStart,
+              progressTextCountDirection: _progressTextCountDirection,
             ),
-          ),
-          
-          ClockCard(
-            chessSide: ChessBoard[0],
-            start: start == 1,
-            timerStyle: _timerStyle,
-            onTapClock: onTapStart,
-            progressTextCountDirection: _progressTextCountDirection,
-          ),
+            ClockCard(
+              chessSide: ChessBoard[0],
+              start: start == 1,
+              timerStyle: _timerStyle,
+              onTapClock: onTapStart,
+              progressTextCountDirection: _progressTextCountDirection,
+            )
+          ]),
         ],
       ),
     );
