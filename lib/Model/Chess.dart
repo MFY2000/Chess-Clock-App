@@ -18,6 +18,8 @@ class ChessPlayer {
 
 List<ChessPlayer> ChessBoard = [
   ChessPlayer(color1: Colors.black, color2: Colors.white, image: "assets/images/2.png"),
-  ChessPlayer(color1: Colors.white, color2: Colors.black, image: "assets/images/1.png"),
-
+  ChessPlayer(color1: Colors.white, color2: Colors.black, image: "assets/images/1.png")
 ];
+
+List<int> historyLog = [2];
+
