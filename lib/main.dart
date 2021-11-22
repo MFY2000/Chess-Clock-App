@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use
 
-import 'package:chesss_watch/Custom/ClockCard.dart';
-import 'package:chesss_watch/Custom/Timer.dart';
+
 import 'package:chesss_watch/Model/Chess.dart';
+import 'package:chesss_watch/Screen/Custom/ClockCard.dart';
+import 'package:chesss_watch/Screen/Custom/Timer.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -57,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          Expanded(
+          Container(
             child: Column(children: [
               ClockCard(
                 chessSide: ChessBoard[1],
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ClockCard(
                 chessSide: ChessBoard[0],
-                start: start == 1,
+                start: start == 1,  
                 timerStyle: _timerStyle,
                 onTapClock: onTapStart,
                 progressTextCountDirection: _progressTextCountDirection,
@@ -105,16 +106,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-  void onTapStart() {
-    setState(() {
-      start = start == 0 ? 1 : 0;
-    });
+  void onTapStart(int index) {
+    if(btnState != 2){
+      if(historyLog.last != index){
+        setState(() {
+          start = index == 0 ? 1 : 0;
+          historyLog.add(index);
+        });
+      }
+    }
   }
 
   void toChangeState(int index) {
     setState(() {
       btnState = index == 2 ? 3 : 2;
-      historyLog.add(btnState);
+      if(index == 2){
+          start = historyLog.last;
+      }
     });
   }
 
