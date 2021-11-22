@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use
 
-import 'package:chesss_watch/ChessTimer.dart';
 import 'package:chesss_watch/Custom/ClockCard.dart';
-import 'package:chesss_watch/Custom/TextFeild.dart';
 import 'package:chesss_watch/Custom/Timer.dart';
 import 'package:chesss_watch/Model/Chess.dart';
-import 'package:chesss_watch/Screen/StartInfroScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +31,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late int start;
-  late bool startButton;
+  int btnState = 2; 
+
 
   late List<ChessPlayer> lst;
   final TimerStyle _timerStyle = TimerStyle.ring;
@@ -46,7 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // initialize timercontroller
     lst = ChessBoard;
-    startButton = true;
     start = 2;
     super.initState();
   }
@@ -60,26 +57,53 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         overflow: Overflow.visible,
         children: <Widget>[
-          Column(children: [
-            ClockCard(
-              chessSide: ChessBoard[1],
-              start: start == 0,
-              timerStyle: _timerStyle,
-              onTapClock: onTapStart,
-              progressTextCountDirection: _progressTextCountDirection,
+          Expanded(
+            child: Column(children: [
+              ClockCard(
+                chessSide: ChessBoard[1],
+                start: start == 0,
+                timerStyle: _timerStyle,
+                onTapClock: onTapStart,
+                progressTextCountDirection: _progressTextCountDirection,
+              ),
+              ClockCard(
+                chessSide: ChessBoard[0],
+                start: start == 1,
+                timerStyle: _timerStyle,
+                onTapClock: onTapStart,
+                progressTextCountDirection: _progressTextCountDirection,
+              )
+            ]),
+          ),
+          Positioned(
+            top: (height * 0.4775),
+            right: (width * 0.375),
+            child: GestureDetector(
+              onTap: () => {toChangeState(btnState)},
+              // autofocus: false,
+              child: Container(
+                height: (height * 0.045),
+                width: (width * 0.25),
+                alignment: Alignment.center,
+                child: Text(
+                  btnState == 2 ? 'Start': "Stop",
+                  style: TextStyle(
+                    color: Color(0xffffffff),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: btnState == 2 ? const Color(0xff00ff08) : Colors.red,
+                ),
+              ),
             ),
-            ClockCard(
-              chessSide: ChessBoard[0],
-              start: start == 1,
-              timerStyle: _timerStyle,
-              onTapClock: onTapStart,
-              progressTextCountDirection: _progressTextCountDirection,
-            )
-          ]),
+          ),
         ],
       ),
     );
   }
+
 
   void onTapStart() {
     setState(() {
@@ -87,18 +111,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void toChangeState() {
+  void toChangeState(int index) {
     setState(() {
-      startButton = !startButton;
+      btnState = index == 2 ? 3 : 2;
+      historyLog.add(btnState);
     });
-
-    if (!startButton) {
-      setState(() {
-        start = 2;
-      });
-    } else {
-      onTapStart();
-    }
   }
 
   void _setCountDirection(TimerProgressTextCountDirection countDirection) {
