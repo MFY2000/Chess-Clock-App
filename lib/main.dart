@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use
 
-
 import 'package:chesss_watch/Model/Chess.dart';
 import 'package:chesss_watch/Screen/Custom/ClockCard.dart';
 import 'package:chesss_watch/Screen/Custom/Timer.dart';
@@ -32,8 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late int start;
-  String btnState = "Start"; 
-
+  String btnState = "Start";
 
   late List<ChessPlayer> lst;
   final TimerStyle _timerStyle = TimerStyle.ring;
@@ -69,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ClockCard(
                 chessSide: ChessBoard[0],
-                start: start == 1,  
+                start: start == 1,
                 timerStyle: _timerStyle,
                 onTapClock: onTapStart,
                 progressTextCountDirection: _progressTextCountDirection,
@@ -80,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
             top: (height * 0.4775),
             right: (width * 0.375),
             child: GestureDetector(
-              onTap: () => {toChangeState( btnState )},
+              onTap: () => {toChangeState(btnState)},
               // autofocus: false,
               child: Container(
                 height: (height * 0.045),
@@ -95,7 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: btnState == "Start" ? const Color(0xff00ff08) : Colors.red,
+                  color: btnState == "Start"
+                      ? const Color(0xff00ff08)
+                      : Colors.red,
                 ),
               ),
             ),
@@ -105,13 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
   void onTapStart(int index) {
-    if(btnState == "Stop"){
-      if(historyLog.last == index){
-        print("$index == ${historyLog.last}");
+    if (btnState == "Stop") {
+      if (start != index) {
         setState(() {
           start = index == 0 ? 1 : 0;
+          print("$start | $index");
           historyLog.add(index);
         });
       }
@@ -120,13 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void toChangeState(String index) {
     setState(() {
-      if(index == "Start"){
-          start = historyLog.last;
-          btnState = "Stop";
-      }
-      else{
-          start = 2;
-          btnState = "Start";
+      if (index == "Start") {
+        start = historyLog.last;
+        btnState = "Stop";
+      } else {
+        start = 2;
+        btnState = "Start";
       }
     });
   }
