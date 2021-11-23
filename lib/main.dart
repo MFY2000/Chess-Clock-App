@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late int start;
-  int btnState = 2; 
+  String btnState = "Start"; 
 
 
   late List<ChessPlayer> lst;
@@ -80,14 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
             top: (height * 0.4775),
             right: (width * 0.375),
             child: GestureDetector(
-              onTap: () => {toChangeState(btnState)},
+              onTap: () => {toChangeState( btnState )},
               // autofocus: false,
               child: Container(
                 height: (height * 0.045),
                 width: (width * 0.25),
                 alignment: Alignment.center,
                 child: Text(
-                  btnState == 2 ? 'Start': "Stop",
+                  btnState,
                   style: TextStyle(
                     color: Color(0xffffffff),
                     fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: btnState == 2 ? const Color(0xff00ff08) : Colors.red,
+                  color: btnState == "Start" ? const Color(0xff00ff08) : Colors.red,
                 ),
               ),
             ),
@@ -107,8 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   void onTapStart(int index) {
-    if(btnState != 2){
-      if(historyLog.last != index){
+    if(btnState == "Stop"){
+      if(historyLog.last == index){
+        print("$index == ${historyLog.last}");
         setState(() {
           start = index == 0 ? 1 : 0;
           historyLog.add(index);
@@ -117,11 +118,15 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void toChangeState(int index) {
+  void toChangeState(String index) {
     setState(() {
-      btnState = index == 2 ? 3 : 2;
-      if(index == 2){
+      if(index == "Start"){
           start = historyLog.last;
+          btnState = "Stop";
+      }
+      else{
+          start = 2;
+          btnState = "Start";
       }
     });
   }
