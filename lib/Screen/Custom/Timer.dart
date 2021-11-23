@@ -23,17 +23,16 @@ class SimpleTimer extends StatefulWidget {
     this.displayProgressText = true,
     this.progressTextCountDirection =
         TimerProgressTextCountDirection.count_down,
-
-     required this.onTapClock, required this.chessSide,
+    required this.onTapClock,
+    required this.chessSide,
   })  : assert(!(status == null && controller == null),
             "No Controller or Status has been set; Please set either the controller (TimerController) or the status (TimerStatus) property - only should can be set"),
         assert(status == null || controller == null,
             "Both Controller and Status have been set; Please set either the controller (TimerController) or the status (TimerStatus) - only one should be set"),
         super(key: key);
 
-
   final ChessPlayer chessSide;
-  final void Function(int index) onTapClock; 
+  final void Function(int index) onTapClock;
   final Duration duration;
   final Duration delay;
   final TimerController? controller;
@@ -58,7 +57,6 @@ class TimerState extends State<SimpleTimer>
   late TimerController controller;
   bool _useLocalController = false;
   bool wasActive = false;
-
 
   @override
   void initState() {
@@ -119,8 +117,7 @@ class TimerState extends State<SimpleTimer>
                   )
                 ],
               ),
-            ))
-        );
+            )));
   }
 
   void _startTimer([bool useDelay = true]) {
