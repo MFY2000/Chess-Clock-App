@@ -21,5 +21,5 @@ List<ChessPlayer> ChessBoard = [
   ChessPlayer(id: 1 ,color1: Colors.white, color2: Colors.black, image: "assets/images/1.png")
 ];
 
-List<int> historyLog = [1];
+List<int> historyLog = [0];
 
