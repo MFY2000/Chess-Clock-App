@@ -4,6 +4,7 @@ import 'package:chesss_watch/Model/Chess.dart';
 import 'package:chesss_watch/Screen/Custom/ClockCard.dart';
 import 'package:chesss_watch/Screen/Custom/Timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
@@ -108,11 +110,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void onTapStart(int index) {
     if (btnState == "Stop") {
       if (start != index) {
+        print("Runing State: $start | ClickBy: $index | Log: $historyLog");
+
         setState(() {
-          start = index == 0 ? 1 : 0;
-          print("$start | $index");
+          start = start == 0 ? 1 : 0;
           historyLog.add(index);
         });
+        print("Runing State: $start | ClickBy: $index | Log: $historyLog \n");
       }
     }
   }
